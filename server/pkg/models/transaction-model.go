@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 const (
 	Income  string = "income"
@@ -11,15 +13,15 @@ type Transaction struct {
 	gorm.Model
 	Type   string `gorm:"not null" json:"type"`
 	UserId uint32  `gorm:"not null" json:"user_id"`
+    CategoryID uint32
+    User
+    Category
 }
 
 func (*Transaction) GetTransactionsByUser(db *gorm.DB, uid uint32) ([]Transaction, error) {
-	var transactions []Transaction
-	result := db.Find(&transactions).Where("user_id = ?", uid)
+    var user User
 
-	if result.Error != nil {
-		return nil, result.Error
-	}
+    db.Preload("Transactions").First(&user, 1)
 
-	return transactions, nil
+    return user.Transactions, nil
 }

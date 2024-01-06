@@ -31,6 +31,6 @@ func GetDB() *gorm.DB {
 }
 
 func MigrateDB() {
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Transaction{})
+	db.AutoMigrate(&models.User{}, &models.Transaction{}, &models.Category{})
+    db.Model(&models.User{}).Association("Transactions").Append(&models.Transaction{})
 }

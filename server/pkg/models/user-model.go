@@ -14,6 +14,7 @@ type User struct {
 	Email    string `gorm:"unique;not null" json:"email"`
 	Password string `gorm:"not null" json:"password"`
 	Avatar   string `json:"avatar"`
+    Transactions []Transaction
 }
 
 func Hash(password string) ([]byte, error) {
